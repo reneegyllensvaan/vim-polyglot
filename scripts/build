@@ -12,6 +12,75 @@ Dir.chdir(File.dirname(__dir__))
 
 BASE_URL = 'https://raw.githubusercontent.com/github/linguist/master'
 
+PACKAGES_YES = Set[
+"automake", "awk", "c/c++", "cpp-modern", "cmake", "cjsx", "dlang", "fennel", "fish", "git",
+"graphql", "groovy", "i3", "javascript", "jenkins", "json5", "json", "jsonnet", "jst", "jsx",
+"llvm", "lua", "markdown", "nim", "objc", "ocaml", "perl", "pug", "python", "python-indent",
+"python-compiler", "requirements", "qmake", "reason", "rst", "rust", "sh", "tmux", "typescript",
+"xml", "yaml", "help", "gitignore", "sql", "conf", "named", "config", "dockerfile", "cfg", "diff",
+"dot", "gdb", "ldif", "ld", "lex", "loginaccess", "logindefs", "mail", "mailaliases", "mailcap",
+"messages", "rc", "neomuttrc", "netrc", "passwd", "readline", "screen", "sshconfig", "sshdconfig",
+"terminfo", "udevconf", "udevperm", "vim", "viminfo", "xdefaults", "xmodmap", "crontab", "text",
+"pullrequest", "autodoc", "html", "html5", "yacc", "sass",
+]
+
+PACKAGES_MAYBE = Set[
+"asciidoc", "applescript", "texinfo", "tex", "tags", "sudoers", "scheme", "catalog", "nroff",
+"pamenv", "pamconf", "nanorc", "muttrc", "gpg", "javacc", "java", "master", "exports", "fstab",
+"hostsaccess", "hostconf", "group", "desktop", "desc", "cl", "clean", "zig", "qml", "terraform",
+"swift", "scala", "brewfile", "ruby", "pony", "php", "nginx", "erlang", "elixir", "clojure",
+"dockerfile", "mdx", "mako", "m4", "log", "less", "kotlin", "jq", "javascript-sql", "haskell",
+"haproxy", "handlebars", "go", "glsl", "fsharp", "flatbuffers", "elm", "dhall", "dart", "cucumber",
+"csv", "coffee-script", "crystal",
+]
+
+PACKAGES_REST = Set[
+"8th", "a2ps", "a65", "aap", "abap", "abaqus", "abc", "abel", "acedb", "acpiasl", "ada", "ahdl",
+"aidl", "alsaconf", "aml", "ampl", "apache", "apiblueprint", "aptconf", "ant", "arch", "arduino",
+"cryptol", "art", "autohotkey", "asn", "aspvbs", "aspperl", "atlas", "autoit", "ave", "caddyfile",
+"carp", "gdscript", "cue", "elf", "emberscript", "emblem", "ferm", "forth", "gmpl", "gnuplot",
+"gradle", "grub", "haml", "haxe", "hcl", "hive", "icalendar", "idris", "idris2", "ion",
+"htmldjango", "julia", "ledger", "lilypond", "livescript", "mathematica", "meson", "moonscript",
+"murphi", "nix", "octave", "opencl", "pgsql", "cql", "blade", "plantuml", "powershell", "protobuf",
+"puppet", "purescript", "r-lang", "racket", "ragel", "raku", "raml", "razor", "rspec", "yard",
+"sbt", "scss", "zinit", "slim", "slime", "smt2", "solidity", "stylus", "svelte", "svg",
+"svg-indent", "sxhkd", "systemd", "textile", "thrift", "toml", "tptp", "twig", "unison", "v",
+"vala", "vbnet", "vcl", "velocity", "vmasm", "vue", "xdc", "xsl", "ansible", "helm", "zephir",
+"trasys", "basic", "visual-basic", "dosini", "odin", "bzl", "prolog", "tads", "b", "ibasic",
+"freebasic", "hamster", "dosbatch", "bc", "bdf", "bib", "bst", "bindzone", "blank", "bsdl", "lpc",
+"calendar", "cs", "csdl", "cabal", "cdrtoc", "cdrdaoconf", "cfengine", "chaiscript", "cdl",
+"conaryrecipe", "crm", "cynpp", "ch", "css", "cterm", "debchangelog", "chill", "chordpro", "cmusrc",
+"cobol", "coco", "cf", "cuda", "dcd", "eterm", "lynx", "quake", "csp", "cupl", "cuplsim",
+"debcontrol", "debcopyright", "debsources", "denyhosts", "dnsmasq", "dictconf", "dictdconf",
+"dircolors", "dylanlid", "dylanintr", "dylan", "def", "dracula", "datascript", "dsl", "dtd", "dts",
+"edif", "ecd", "elinks", "elmfilt", "esmtprc", "esqlc", "esterel", "csc", "exim", "expect",
+"falcon", "fan", "factor", "fetchmail", "focexec", "reva", "fortran", "framescript", "gdmo",
+"gedcom", "gkrellmrc", "gp", "gnash", "gitolite", "grads", "gretl", "gsp", "gtkrc", "lhaskell",
+"chaskell", "haste", "hastepreproc", "hercules", "hex", "hollywood", "tilde", "htmlm4", "template",
+"hb", "httest", "icon", "msidl", "icemenu", "indent", "inform", "initng", "upstreamdat",
+"upstreamlog", "upstreaminstalllog", "usserverlog", "usw2kagtlog", "ipfilter", "fgl", "inittab",
+"iss", "j", "jal", "jam", "jsp", "jproperties", "jess", "jgraph", "jovial", "kix", "kwt", "kivy",
+"kscript", "kconfig", "lace", "latte", "limits", "lprolog", "libao", "sensors", "lftp", "lifelines",
+"lilo", "lisp", "liquid", "lite", "litestep", "logtalk", "lotos", "lout", "lsl", "lss", "mgp",
+"ist", "mallard", "manconf", "maple", "map", "mel", "hgcommit", "mf", "mp", "mgl", "mix", "mmp",
+"modula2", "modula3", "monk", "moo", "modconf", "mplayerconf", "srec", "mrxvtrc", "msql", "mysql",
+"mupad", "mush", "n1ql", "natural", "ninja", "ncf", "nqc", "nsis", "occam", "omnimark", "openroad",
+"opl", "ora", "pf", "papp", "pascal", "pdf", "pcmk", "pike", "cmod", "pinfo", "pilrc", "pine",
+"pli", "plm", "plsql", "plp", "po", "pfmain", "postscr", "ppd", "pov", "povini", "pccts", "ppwiz",
+"obj", "proc", "privoxy", "procmail", "psf", "promela", "protocols", "pyrex", "radiance",
+"ratpoison", "rcs", "rib", "rego", "rexx", "rnoweb", "rmd", "rrst", "remind", "resolv", "rnc",
+"rng", "rpl", "robots", "rpcgen", "rtf", "slang", "samba", "sas", "sather", "sbt", "scilab", "sd",
+"sdl", "sed", "sieve", "sm", "services", "slpconf", "slpreg", "slpspi", "setserial", "simula",
+"sinda", "sisu", "skill", "slrnrc", "slrnsc", "st", "smarty", "smith", "snobol4", "mib", "hog",
+"spec", "spup", "slice", "spice", "spyce", "squid", "sqlj", "sqr", "stata", "smcl", "stp", "sml",
+"voscm", "swiftgyb", "sil", "sysctl", "sdc", "tak", "taskdata", "taskedit", "tcl", "tli", "tsalt",
+"teraterm", "texmf", "tidy", "tf", "tpp", "treetop", "trustees", "tssgm", "tssop", "tsscl", "twig",
+"uil", "uc", "updatedb", "upstart", "vera", "verilog", "verilogams", "systemverilog", "vhdl",
+"vgrindefs", "vrml", "vroom", "wast", "webmacro", "wget", "wml", "winbatch", "wsml", "wvdial",
+"cvsrc", "cvs", "wsh", "xhtml", "xinetd", "xmath", "xquery", "xsd", "xslt", "zimbu", "zimbutempl",
+"z8a", "apachestyle", "asterisk", "asteriskvm", "bzr", "fvwm", "logcheck", "svn",
+]
+
 def camelize(str)
   str.split(/[-_\.]/).map { |a| a.capitalize }.join("")
 end
@@ -106,6 +175,10 @@ def load_data()
   languages = load_languages
   heuristics = load_heuristics
 
+  packages = packages.filter do |package|
+    PACKAGES_YES.member? package["name"]
+  end
+
   for package in packages
     for filetype in package["filetypes"]
       if filetype["patterns"]
@@ -137,7 +210,7 @@ def load_data()
 
         extra_ignored_extensions = filetype.fetch("ignored_extensions", []) - filetype["extensions"]
         if extra_ignored_extensions.size > 0
-          raise StandardError.new("[#{filetype["name"]}]: Unnecessary ignored extensions: #{extra_ignored_extensions.join(", ")}") 
+          raise StandardError.new("[#{filetype["name"]}]: Unnecessary ignored extensions: #{extra_ignored_extensions.join(", ")}")
         end
 
         filetype["extensions"] -= filetype.fetch("ignored_extensions", [])
@@ -146,7 +219,7 @@ def load_data()
           (linguist["filenames"] || []) |
           filetype.fetch("extra_filenames", [])
         ) - filetype.fetch("ignored_filenames", [])).uniq
-        
+
         filetype["interpreters"] = ((
           (linguist["interpreters"] || []) |
           filetype.fetch("extra_interpreters", [])
@@ -279,7 +352,7 @@ def copy_file(package, src, dest)
       contents.gsub!(/!@#%#/, "") rescue contents = contents.force_encoding('iso-8859-1').encode('utf-8')
       # ..= is feature of new vims...
       contents.gsub!(' ..= ', ' .= ')
-      # https://github.com/vim/vim/pull/7091 
+      # https://github.com/vim/vim/pull/7091
       contents.gsub!(/set(local)? fileencoding=utf-8/, '')
       contents.gsub!(/ fileencoding=utf-8/, '')
       contents.gsub!('À-ÿ', '\u00ac-\uffff')
@@ -441,7 +514,7 @@ def rule_to_code(rule)
   if (rule.keys - ["extensions"]).size > 0
     raise "Unknown rule: #{JSON.generate(rule)}"
   end
-  
+
   return ""
 end
 
@@ -606,9 +679,10 @@ def generate_ftdetect(packages, heuristics)
     end
 
     if package_autocommands.flatten.size > 0
-      output << "if !has_key(s:disabled_packages, '#{package["name"]}')\n"
-      output << indent(package_autocommands.map { |pc| pc.reverse.join("\n") }.join("\n\n"), 2)
-      output << "\nendif\n\n"
+      #output << "if !has_key(s:disabled_packages, '#{package["name"]}')\n"
+      output << (package_autocommands.map { |pc| pc.reverse.join("\n") }.join("\n\n"))
+      output << "\n"
+      #output << "\nendif\n\n"
     end
 
   end
@@ -812,7 +886,7 @@ def show_warnings(all_filetypes, expected_filetypes)
 
 
   all_handled = process_list(all_filetypes, all_expected) do |f|
-    [f["filenames"], f["ignored_filenames"], f["ignored_warnings"], f["extra_filenames"]].compact.flatten + 
+    [f["filenames"], f["ignored_filenames"], f["ignored_warnings"], f["extra_filenames"]].compact.flatten +
       [f["extensions"], f["ignored_extensions"], f["extra_extensions"]].compact.flatten.map { |e| "*." + e }
   end
 
